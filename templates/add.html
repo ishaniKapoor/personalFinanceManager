@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST">
+  <div class="mb-3">
+    <label for="type" class="form-label">Type</label>
+    <select name="type" class="form-select" required>
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <input type="text" class="form-control" name="category" placeholder="Groceries, Rent..." />
+  </div>
+  <div class="mb-3">
+    <label for="amount" class="form-label">Amount (USD)</label>
+    <input type="number" step="0.01" class="form-control" name="amount" required />
+  </div>
+  <div class="mb-3">
+    <label for="date" class="form-label">Date</label>
+    <input type="date" class="form-control" name="date" required />
+  </div>
+  <div class="mb-3">
+    <label for="notes" class="form-label">Notes</label>
+    <textarea class="form-control" name="notes"></textarea>
+  </div>
+  <button type="submit" class="btn btn-success">Add</button>
+</form>
+{% endblock %}
