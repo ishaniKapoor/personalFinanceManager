@@ -40,8 +40,32 @@ def summary(year, month):
     breakdown = queries.category_breakdown(
         1, f"{year}-{month:02d}-01", f"{year}-{month:02d}-31"
     )
+
+    # daily expenses for line chart
+    txs = queries.list_transactions(
+        user_id=1,
+        start_date=f"{year}-{month:02d}-01",
+        end_date=f"{year}-{month:02d}-31",
+        type_="expense",
+        limit=1000,
+    )
+    daily_totals = {}
+    for tx in txs:
+        day = tx["date"]
+        amt = tx["amount_cents"] / 100
+        daily_totals[day] = daily_totals.get(day, 0) + amt
+
+    days = sorted(daily_totals.keys())
+    amounts = [daily_totals[d] for d in days]
+
     return render_template(
-        "summary.html", totals=totals, breakdown=breakdown, year=year, month=month
+        "summary.html",
+        totals=totals,
+        breakdown=breakdown,
+        year=year,
+        month=month,
+        days=days,
+        amounts=amounts,
     )
 
 
@@ -63,3 +87,6 @@ def chart_pie(year, month):
     )
     labels = [cat for cat, _ in breakdown]
     sizes = [float(amount) for _, amount in breakdown]
+
+if __name__ == "__main__":
+    app.run(debug=True)

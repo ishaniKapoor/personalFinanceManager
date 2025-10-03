@@ -27,11 +27,31 @@
 <div class="row">
   <div class="col-md-6">
     <h5>Category Breakdown</h5>
-    <img src="data:image/png;base64,{{ (url_for('chart_pie', year=year, month=month) | safe) }}" alt="Pie Chart" />
+    <div id="pieChart"></div>
   </div>
   <div class="col-md-6">
     <h5>Daily Expenses</h5>
-    <img src="data:image/png;base64,{{ (url_for('chart_line', year=year, month=month) | safe) }}" alt="Line Chart" />
+    <div id="lineChart"></div>
   </div>
 </div>
+
+<script>
+  // Pie chart
+  var pieData = [{
+    values: {{ breakdown | map(attribute=1) | list | safe }},
+    labels: {{ breakdown | map(attribute=0) | list | safe }},
+    type: 'pie'
+  }];
+  Plotly.newPlot('pieChart', pieData, { title: 'Spending Breakdown' });
+
+  // Line chart
+  var lineData = [{
+    x: {{ days | safe }},
+    y: {{ amounts | safe }},
+    type: 'scatter',
+    mode: 'lines+markers',
+    marker: { size: 8 }
+  }];
+  Plotly.newPlot('lineChart', lineData, { title: 'Daily Expenses' });
+</script>
 {% endblock %}

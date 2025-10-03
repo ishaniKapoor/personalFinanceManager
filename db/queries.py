@@ -83,7 +83,7 @@ def list_transactions(
     SELECT t.*, c.name AS category_name
     FROM transactions t
     LEFT JOIN categories c ON c.id = t.category_id
-    WHERE {' AND'.join(where)}
+    WHERE {' AND '.join(where)}
     ORDER BY t.date DESC, t.id DESC
     LIMIT ? OFFSET ?
     """
